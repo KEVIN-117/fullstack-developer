@@ -12,7 +12,7 @@ Este informe técnico exhaustivo aborda la naturaleza multifacética de Active D
 
 ---
 
-**Capítulo 1: Arquitectura y Modelado de Active Directory**
+# **Capítulo 1: Arquitectura y Modelado de Active Directory**
 
 Para asegurar y configurar Active Directory, es imperativo comprender primero su diseño subyacente. AD opera bajo dos modelos distintos pero interconectados: el modelo lógico, que define la organización de los recursos y las políticas de seguridad, y el modelo físico, que gestiona la optimización del tráfico de red y la replicación de datos.3
 
@@ -68,7 +68,7 @@ Active Directory utiliza una base de datos basada en el motor Jet (Blue) llamada
 
 ---
 
-**Capítulo 2: Despliegue y Configuración de Active Directory**
+# **Capítulo 2: Despliegue y Configuración de Active Directory**
 
 La configuración inicial de Active Directory establece la línea base de seguridad y funcionalidad para toda la vida útil del entorno. Un diseño deficiente en esta etapa puede introducir vulnerabilidades difíciles de remediar posteriormente.
 
@@ -105,7 +105,7 @@ La elección del nombre de dominio raíz es una decisión crítica.
 
 ---
 
-**Capítulo 3: Mecanismos de Autenticación \- Un Análisis Profundo**
+# **Capítulo 3: Mecanismos de Autenticación \- Un Análisis Profundo**
 
 La función primordial de Active Directory es la autenticación: verificar que una entidad es quien dice ser. Históricamente, Microsoft ha soportado dos familias de protocolos: NTLM (NT LAN Manager) y Kerberos. Comprender la mecánica interna de estos protocolos es vital para identificar vulnerabilidades y configurar defensas efectivas.
 
@@ -178,11 +178,9 @@ El proceso de autenticación completa implica varios intercambios de mensajes:
 | **Uso de Puertos**          | Aleatorios (RPC), 445 (SMB)                | Estandarizado (Puerto 88 UDP/TCP)                |
 | **Dependencia**             | Requiere conectividad IP directa           | Requiere DNS y Sincronización de Tiempo (NTP)    |
 
-12
-
 ---
 
-**Capítulo 4: Peligros en la Configuración y Vectores de Ataque**
+# **Capítulo 4: Peligros en la Configuración y Vectores de Ataque**
 
 La complejidad de Active Directory, combinada con configuraciones predeterminadas orientadas a la compatibilidad, crea una superficie de ataque extensa. Los atacantes modernos no suelen explotar vulnerabilidades de software (exploits), sino debilidades en la configuración y la arquitectura.
 
@@ -240,7 +238,7 @@ Una evolución del Golden Ticket. En lugar de forjar un ticket desde cero, el at
 
 ---
 
-**Capítulo 5: Estrategias de Defensa y Hardening para 2025**
+# **Capítulo 5: Estrategias de Defensa y Hardening para 2025**
 
 Frente a este panorama de amenazas, la defensa de Active Directory no puede ser reactiva. Requiere una reingeniería basada en principios de Confianza Cero y aislamiento de privilegios.
 
