@@ -3,7 +3,7 @@ sticker: lucide//file-text
 ---
 ## **Resumen Ejecutivo**
 
-El presente informe técnico ofrece un análisis exhaustivo, crítico y práctico de la obra "Gray Hat C\#: A Hacker's Guide to Creating and Automating Security Tools" de Brandon Perry.1 En el contexto actual de la ciberseguridad, donde la velocidad de respuesta y la adaptabilidad son críticas, la capacidad de desarrollar herramientas personalizadas trasciende la mera habilidad técnica para convertirse en una necesidad operativa. Este documento desglosa los catorce capítulos del libro, diseccionando la arquitectura de código, los fundamentos teóricos subyacentes y las implicaciones de seguridad de cada herramienta desarrollada.
+El presente informe técnico ofrece un análisis exhaustivo, crítico y práctico de la obra "`Gray Hat C#: A Hacker's Guide to Creating and Automating Security Tools`" de Brandon Perry.1 En el contexto actual de la ciberseguridad, donde la velocidad de respuesta y la adaptabilidad son críticas, la capacidad de desarrollar herramientas personalizadas trasciende la mera habilidad técnica para convertirse en una necesidad operativa. Este documento desglosa los catorce capítulos del libro, diseccionando la arquitectura de código, los fundamentos teóricos subyacentes y las implicaciones de seguridad de cada herramienta desarrollada.
 
 El informe adopta un enfoque de "Gray Hat" (Sombrero Gris), situándose en la intersección entre la administración de sistemas defensiva y la explotación ofensiva. A diferencia de los resúmenes convencionales, este análisis expande los conceptos originales integrando conocimientos modernos sobre evasión de defensas, arquitectura de sistemas operativos y protocolos de red, proporcionando una guía de estudio robusta para el investigador de seguridad avanzada. El objetivo es transformar el conocimiento estático del libro en competencia operativa dinámica, alineada con las demandas del mercado actual de 2025, donde la automatización y la personalización de payloads son diferenciadores clave.1
 
@@ -24,15 +24,15 @@ El autor destaca el uso de Mono para garantizar la portabilidad multiplataforma.
 ```C#
 using System;
 
-namespace Ch1\_HelloWorld  
+namespace Ch1_HelloWorld  
 {  
     class MainClass  
     {  
         public static void Main(string args)  
         {  
-            string hello \= "Hello World\!";  
-            DateTime now \= DateTime.Now;  
-            Console.WriteLine(hello \+ " La fecha es " \+ now.ToLongDateString());  
+            string hello = "Hello World\!";  
+            DateTime now = DateTime.Now;  
+            Console.WriteLine(hello + " La fecha es " + now.ToLongDateString());  
         }  
     }  
 }
@@ -45,10 +45,10 @@ Aunque elemental, este fragmento ilustra la estructura de espacios de nombres (n
 El diseño de herramientas de seguridad robustas requiere un dominio de la herencia y el polimorfismo. El texto introduce la creación de clases abstractas e interfaces, no como un ejercicio académico, sino como plantillas para tipos de ataques.
 
 Abstracción y Herencia:  
-Se presenta el ejemplo de una clase abstracta PublicServant y una interfaz IPerson.
+Se presenta el ejemplo de una clase abstracta `PublicServant` y una interfaz IPerson.
 
-* **Clases Abstractas:** PublicServant define propiedades base como PensionAmount y métodos abstractos como DriveToPlaceOfInterest(). En un contexto de malware, esto sería análogo a una clase base NetworkConnection que define métodos abstractos como Connect() y Send(), obligando a las clases derivadas (TcpConnection, UdpConnection) a implementar la lógica específica del protocolo.1  
-* **Interfaces:** La interfaz IPerson define un contrato (propiedades Name y Age) que cualquier clase implementadora debe cumplir. Esto permite tratar objetos dispares (un Firefighter y un PoliceOfficer) de manera polimórfica.
+* **Clases Abstractas:** `PublicServant` define propiedades base como `PensionAmount` y métodos abstractos como `DriveToPlaceOfInterest()`. En un contexto de malware, esto sería análogo a una clase base `NetworkConnection` que define métodos abstractos como `Connect()` y `Send()`, obligando a las clases derivadas (`TcpConnection`, `UdpConnection`) a implementar la lógica específica del protocolo.
+* **Interfaces:** La interfaz `IPerson` define un contrato (propiedades Name y Age) que cualquier clase implementadora debe cumplir. Esto permite tratar objetos dispares (un `Firefighter` y un `PoliceOfficer`) de manera polimórfica.
 
 ```C#
 public abstract class PublicServant  
@@ -94,7 +94,7 @@ static extern int MessageBox(IntPtr hWnd, String text, String caption, int optio
 static extern void printf(string message);
 ```
 
-El atributo \`\` instruye al runtime para cargar la librería externa y localizar el punto de entrada de la función. El código demuestra cómo detectar el sistema operativo (Environment.OSVersion.Platform) y ejecutar condicionalmente llamadas a MessageBox (Windows) o printf (Linux). Este es el fundamento de los payloads multiplataforma que se desarrollarán en el Capítulo 4\.1
+El atributo instruye al runtime para cargar la librería externa y localizar el punto de entrada de la función. El código demuestra cómo detectar el sistema operativo (Environment.OSVersion.Platform) y ejecutar condicionalmente llamadas a MessageBox (Windows) o printf (Linux). Este es el fundamento de los payloads multiplataforma que se desarrollarán en el Capítulo 4\.1
 
 ### **Ejercicios de Investigación y Práctica Avanzada \- Capítulo 1**
 
