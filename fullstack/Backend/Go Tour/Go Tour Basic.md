@@ -2,7 +2,7 @@
 sticker: lucide//ghost
 banner: assets/ether-bg.jpeg
 ---
-# Introducción
+# 1. Introducción
 `Go` también conocido como `Golang` es un lenguaje compilado podríamos verlo como un lenguaje tan versátil como la de `C/C++` pero con la simplicidad de `Python`. Su sintaxis base es la siguiente
 ```go
 package main
@@ -191,12 +191,99 @@ Resumen:
 - `go vet` → análisis estático de errores.  
 - **Go Playground** → laboratorio online para probar y compartir código.
 ---
-# Understanding Go Syntax
+Perfecto, Kevin ⚡. Aquí tienes los apuntes completos siguiendo tu estructura, con definiciones cortas y ejemplos prácticos en cada sección:
 
-## Tipos de datos
+---
 
-### Primitivos
-`Go` tiene tipos básicos muy directos:
+# 2. Fundamentos (Basics)
+---
+## 2.1 Fundamentos (Basics)
+
+---
+
+### Paquetes y Exportación
+- Todo programa en Go comienza en el **paquete `main`**.  
+- Los paquetes permiten organizar el código en módulos reutilizables.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hola desde main")
+}
+```
+
+---
+
+### Importaciones (`import`)
+- Se usan para traer librerías estándar o externas.  
+- Se pueden importar múltiples paquetes en un bloque o también la importación en una sola linea pero solo para un paquete
+
+```go
+import (
+    "fmt"
+    "math"
+)
+// import "fmt"
+
+func main() {
+    fmt.Println(math.Sqrt(16))
+}
+```
+
+---
+
+### Nombres exportados (Mayúscula vs Minúscula)
+- En Go, **los identificadores que empiezan con mayúscula son exportados** (públicos).  
+- Los que empiezan con minúscula son privados al paquete.
+
+```go
+// Exportado
+func Sumar(a, b int) int { return a + b }
+
+// No exportado
+func restar(a, b int) int { return a - b }
+```
+
+---
+
+### Variables y Funciones
+
+#### Declaración de variables (`var` vs `:=`)
+- `var` → declaración explícita.  
+- `:=` → declaración corta con inferencia de tipo.
+
+```go
+var x int = 10
+y := 20
+```
+
+#### Inicializadores
+- Se pueden inicializar múltiples variables en una sola línea.
+
+```go
+var a, b, c = 1, 2, 3
+```
+
+#### Funciones: Retornos múltiples y valores de retorno con nombre
+- Go permite retornar múltiples valores.  
+- También se pueden nombrar los valores de retorno.
+
+```go
+func dividir(a, b int) (int, error) {
+    if b == 0 {
+        return 0, fmt.Errorf("división por cero")
+    }
+    return a / b, nil
+}
+```
+
+---
+### Enteros, Flotantes, Booleanos, Strings
+- Tipos básicos ya vistos, con operaciones estándar.
+- Primitivos: Go tiene tipos básicos muy directos:
 
 ```go
 var entero int = 42
@@ -204,46 +291,277 @@ var flotante float64 = 3.14
 var booleano bool = true
 var texto string = "Hola Go"
 ```
+- `int`, `int32`, `int64` → enteros  
+- `float32`, `float64` → decimales  
+- `bool` → verdadero/falso  
+- `string` → texto  
 
-- `int`, `int32`, `int64` → enteros
-- `float32`, `float64` → decimales
-- `bool` → verdadero/falso
-- `string` → texto
-
----
-
-### `Slices` y `Maps`
-- **Slices**: listas dinámicas.
+*Estructura básica del lenguaje, variables y tipos primitivos.
 
 ```go
-numeros := []int{1, 2, 3}
-numeros = append(numeros, 4)
-```
-
-- **Maps**: diccionarios clave-valor.
-
-```go
-edades := map[string]int{
-    "Ana": 25,
-    "Luis": 30,
-}
-fmt.Println(edades["Ana"])
+i := 5
+f := 3.2
+b := true
+s := "Go es genial"
 ```
 
 ---
+### Zero Values (Valores por defecto)
+- En Go, las variables no inicializadas tienen un valor por defecto:
+  - `int` → `0`
+  - `float` → `0.0`
+  - `bool` → `false`
+  - `string` → `""`
 
-## Apuntadores, `structs` e interfaces
+```go
+var x int    // 0
+var y string // ""
+```
 
-- **Apuntadores**: permiten referenciar direcciones de memoria.
+---
+### Conversión de tipos (`T(v)`)
+- Se hace con la sintaxis `T(v)`.
 
 ```go
 var x int = 10
-var p *int = &x // con & permite referencia a la direccion de memoria
-fmt.Println(*p) // con * permite obtener el valor -> 10
+var y float64 = float64(x)
 ```
 
-- **Structs**: definen tipos compuestos.
+---
+### Inferencia de tipos
+- Go infiere el tipo automáticamente con `:=`.
 
+```go
+mensaje := "Hola"
+numero := 42
+```
+
+---
+### Constantes
+- Se definen con `const`.  
+- No pueden cambiar durante la ejecución.
+
+```go
+const Pi = 3.14159
+```
+
+---
+### Constantes numéricas de precisión arbitraria
+- Las constantes numéricas en Go tienen **precisión arbitraria** hasta que se usan.  
+- Esto permite cálculos seguros sin pérdida de precisión.
+
+```go
+const Big = 1 << 62
+const Small = Big >> 61
+```
+
+---
+## 2.2. Control de Flujo (Flow Control)
+
+*Cómo se mueve la ejecución. Go unifica muchas estructuras.*
+
+---
+
+### La única estructura de bucle en Go
+En Go **solo existe `for`**, pero es muy flexible y cubre los casos de `for`, `while` y bucles infinitos.
+
+#### `for` clásico (con inicialización, condición y post-expresión)
+```go
+for i := 0; i < 5; i++ {
+    fmt.Println(i)
+}
+```
+*Equivalente al `for` de C/Java.*
+
+#### `for` como `while`
+```go
+i := 0
+for i < 5 {
+    fmt.Println(i)
+    i++
+}
+```
+*Se omite la inicialización y el post-expresión, quedando como un `while`.*
+
+#### Bucles infinitos
+```go
+for {
+    fmt.Println("Loop infinito")
+}
+```
+*Se usa en servidores, goroutines o listeners.*
+
+#### Iteración sobre colecciones (`range`)
+```go
+numeros := []int{10, 20, 30}
+for idx, val := range numeros {
+    fmt.Println("Índice:", idx, "Valor:", val)
+}
+```
+- `range` devuelve índice y valor.
+- Se puede ignorar uno de ellos con `_`.
+
+#### Iteración sobre mapas
+```go
+edades := map[string]int{"Ana": 25, "Luis": 30}
+for nombre, edad := range edades {
+    fmt.Println(nombre, edad)
+}
+```
+
+#### Iteración sobre strings (runes)
+```go
+for i, r := range "Go!" {
+    fmt.Printf("Posición %d: %c\n", i, r)
+}
+```
+
+---
+
+### Condicionales (If/Else)
+
+#### `if` con sentencia corta de inicialización
+```go
+if x := obtenerValor(); x > 10 {
+    fmt.Println("Mayor que 10")
+} else {
+    fmt.Println("Menor o igual a 10")
+}
+```
+*La variable `x` solo existe dentro del bloque `if`.*
+
+---
+
+### Switch
+El `switch` en Go es más poderoso y flexible que en otros lenguajes.
+
+#### Switch con expresión
+```go
+switch dia {
+case "lunes":
+    fmt.Println("Inicio de semana")
+case "viernes":
+    fmt.Println("Casi fin de semana")
+default:
+    fmt.Println("Otro día")
+}
+```
+
+#### Switch sin condición (como múltiples `if`)
+```go
+switch {
+case x < 0:
+    fmt.Println("Negativo")
+case x == 0:
+    fmt.Println("Cero")
+default:
+    fmt.Println("Positivo")
+}
+```
+
+#### Múltiples valores en un mismo `case`
+```go
+switch letra {
+case "a", "e", "i", "o", "u":
+    fmt.Println("Es vocal")
+default:
+    fmt.Println("Es consonante")
+}
+```
+
+#### Fallthrough
+Permite continuar al siguiente `case` aunque ya se haya cumplido uno.
+```go
+switch numero := 2; numero {
+case 1:
+    fmt.Println("Uno")
+case 2:
+    fmt.Println("Dos")
+    fallthrough
+case 3:
+    fmt.Println("Tres")
+}
+```
+*Salida: "Dos" y "Tres".*
+
+#### Orden de evaluación
+- Los `case` se evalúan **de arriba hacia abajo**.
+- Se ejecuta el **primer caso que cumpla la condición**.
+- No hay necesidad de `break` (se hace automáticamente).
+
+---
+
+### Ejecución diferida (LIFO) con `defer`
+
+#### Concepto
+- `defer` pospone la ejecución de una función hasta que la función envolvente termine.  
+- Se ejecuta en **orden inverso (Last In, First Out)**.  
+- Muy útil para liberar recursos (cerrar archivos, conexiones, etc.).
+
+#### Ejemplo básico
+```go
+func ejemplo() {
+    defer fmt.Println("Último")
+    defer fmt.Println("Segundo")
+    fmt.Println("Primero")
+}
+```
+**Salida:**
+```
+Primero
+Segundo
+Último
+```
+
+#### Uso típico: cerrar recursos
+```go
+func leerArchivo() {
+    f, err := os.Open("data.txt")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer f.Close() // se asegura de cerrar el archivo al final
+
+    // procesar archivo...
+}
+```
+
+#### Stacking defers (apilamiento)
+Se pueden apilar múltiples `defer`.  
+Esto asegura que los recursos se liberen en orden inverso al que se adquirieron.
+
+```go
+func manejarArchivos() {
+    f1, _ := os.Open("archivo1.txt")
+    defer f1.Close()
+
+    f2, _ := os.Open("archivo2.txt")
+    defer f2.Close()
+
+    fmt.Println("Procesando archivos...")
+}
+```
+
+#### Evaluación inmediata de argumentos
+Los **argumentos de la función diferida se evalúan inmediatamente**, aunque la función se ejecute después.
+```go
+func ejemplo() {
+    x := 10
+    defer fmt.Println(x) // imprime 10, aunque luego cambie
+    x = 20
+}
+```
+
+---
+
+## 2.3. Estructuras y Tipos Complejos (More Types)
+
+*Gestión de memoria y colecciones de datos.*
+
+---
+
+### Structs
+Definen tipos compuestos que agrupan datos relacionados.
 ```go
 type Persona struct {
     Nombre string
@@ -251,10 +569,13 @@ type Persona struct {
 }
 
 p := Persona{"Alguien", 28}
+fmt.Println(p.Nombre, p.Edad)
 ```
 
-- **Interfaces**: definen comportamientos.
+---
 
+### Interfaces
+Definen comportamientos que los tipos deben implementar.
 ```go
 type Animal interface {
     Hablar() string
@@ -262,35 +583,345 @@ type Animal interface {
 
 type Perro struct{}
 func (Perro) Hablar() string { return "Guau" }
+
+var a Animal = Perro{}
+fmt.Println(a.Hablar())
 ```
 
 ---
 
-## Estructuras de control
-Go usa sintaxis clara y sin paréntesis extra:
+### Punteros
+Permiten referenciar direcciones de memoria.
+```go
+var x int = 10
+var p *int = &x
+fmt.Println(*p) // 10
+```
+
+---
+
+### Referencias a memoria (`&`, `*`)
+- `&` → obtiene la dirección de memoria.  
+- `*` → desreferencia, accede al valor.
 
 ```go
-if x > 0 {
-    fmt.Println("Positivo")
-} else {
-    fmt.Println("No positivo")
-}
+y := 20
+ptr := &y
+fmt.Println(*ptr) // 20
+```
 
-for i := 0; i < 5; i++ {
-    fmt.Println(i)
-}
+---
 
-switch dia {
-case "lunes":
-    fmt.Println("Inicio de semana")
-default:
-    fmt.Println("Otro día")
+### `nil`
+Valor especial que indica ausencia de datos en punteros, slices, maps, interfaces, etc.
+```go
+var p *int = nil
+if p == nil {
+    fmt.Println("Puntero vacío")
 }
 ```
 
 ---
 
-## Concurrencia
+### Definición de campos
+Los campos de un `struct` pueden ser nombrados o anónimos.
+```go
+type Punto struct {
+    X, Y int
+}
+```
+
+---
+
+### Literales de struct
+Se pueden inicializar con valores directos.
+```go
+p := Punto{X: 10, Y: 20}
+```
+
+---
+
+### Arrays (tamaño fijo) vs Slices (dinámicos)
+- **Array**: tamaño fijo.
+```go
+var arr [3]int = [3]int{1, 2, 3}
+```
+- **Slice**: tamaño dinámico.
+```go
+slice := []int{1, 2, 3, 4}
+```
+
+---
+
+### Longitud (`len`) y Capacidad (`cap`)
+```go
+s := make([]int, 3, 5)
+fmt.Println(len(s)) // 3
+fmt.Println(cap(s)) // 5
+```
+
+---
+
+### Creación con `make`
+`make` se usa para crear slices, maps y canales.
+```go
+s := make([]int, 0, 10)
+m := make(map[string]int)
+c := make(chan int)
+```
+
+---
+
+### `append` y `copy`
+- `append` agrega elementos.
+```go
+s := []int{1, 2}
+s = append(s, 3, 4)
+```
+- `copy` copia elementos entre slices.
+```go
+a := []int{1, 2, 3}
+b := make([]int, len(a))
+copy(b, a)
+```
+
+---
+
+### Slices de slices (Multidimensionales)
+```go
+matriz := [][]int{
+    {1, 2},
+    {3, 4},
+}
+fmt.Println(matriz[1][0]) // 3
+```
+
+---
+
+### Iteración con `range`
+```go
+for i, v := range []string{"Go", "Rust", "C++"} {
+    fmt.Println(i, v)
+}
+```
+
+---
+
+### Maps
+#### Diccionarios clave-valor
+```go
+m := map[string]int{"Ana": 25, "Luis": 30}
+```
+
+#### Mutación de mapas (insertar, actualizar, borrar)
+```go
+m["Carlos"] = 40   // insertar
+m["Ana"] = 26      // actualizar
+delete(m, "Luis")  // borrar
+```
+
+#### Verificación de existencia (`elem, ok := m[key]`)
+```go
+edad, ok := m["Ana"]
+if ok {
+    fmt.Println("Edad de Ana:", edad)
+}
+```
+
+---
+
+### Funciones Avanzadas
+#### Funciones como valores (First-class citizens)
+Las funciones se pueden asignar a variables y pasar como argumentos.
+```go
+f := func(x int) int { return x * 2 }
+fmt.Println(f(5)) // 10
+```
+
+#### Closures (Funciones anónimas y captura de estado)
+Las funciones pueden capturar variables externas.
+```go
+func contador() func() int {
+    x := 0
+    return func() int {
+        x++
+        return x
+    }
+}
+
+c := contador()
+fmt.Println(c()) // 1
+fmt.Println(c()) // 2
+```
+
+---
+
+## 2.4. Métodos e Interfaces
+
+*El enfoque de Go para la Orientación a Objetos.*  
+Go no tiene clases como en Java o C++, pero permite asociar **métodos** a tipos y definir **interfaces** para comportamientos.
+
+---
+
+### Métodos
+Los métodos se definen sobre tipos (structs o alias).  
+```go
+type Rectangulo struct {
+    Ancho, Alto float64
+}
+
+// Método asociado al tipo Rectangulo
+func (r Rectangulo) Area() float64 {
+    return r.Ancho * r.Alto
+}
+
+r := Rectangulo{10, 5}
+fmt.Println(r.Area()) // 50
+```
+
+---
+
+### Receptores de valor vs. Receptores de puntero (`(v T)` vs `(v *T)`)
+- **Receptor de valor (`(v T)`)**: recibe una copia del objeto. No modifica el original.
+- **Receptor de puntero (`(v *T)`)**: recibe una referencia. Puede modificar el objeto.
+
+```go
+type Contador struct{ Valor int }
+
+func (c Contador) IncrementarValor() { c.Valor++ }   // copia
+func (c *Contador) IncrementarPuntero() { c.Valor++ } // referencia
+
+c := Contador{}
+c.IncrementarValor()
+fmt.Println(c.Valor) // 0 (no cambia)
+
+c.IncrementarPuntero()
+fmt.Println(c.Valor) // 1 (sí cambia)
+```
+
+---
+
+### Interfaces
+Definen **comportamientos** que los tipos deben implementar.
+
+#### Definición de comportamientos
+```go
+type Animal interface {
+    Hablar() string
+}
+```
+
+#### Implementación implícita (Duck typing)
+No se declara explícitamente que un tipo implementa una interfaz; basta con que cumpla sus métodos.
+```go
+type Perro struct{}
+func (Perro) Hablar() string { return "Guau" }
+
+var a Animal = Perro{}
+fmt.Println(a.Hablar())
+```
+
+#### Valores de interfaz y `nil`
+Una interfaz puede contener un valor y su tipo.  
+Si no contiene nada, es `nil`.
+```go
+var a Animal
+if a == nil {
+    fmt.Println("Interfaz vacía")
+}
+```
+
+#### Interfaz vacía (`interface{}`)
+Representa cualquier tipo.  
+```go
+func imprimir(v interface{}) {
+    fmt.Println(v)
+}
+
+imprimir(42)
+imprimir("texto")
+```
+
+#### Type Assertions
+Permiten convertir una interfaz a su tipo concreto.
+```go
+var i interface{} = "hola"
+s, ok := i.(string)
+if ok {
+    fmt.Println("Es string:", s)
+}
+```
+
+#### Type Switches
+Permiten evaluar el tipo dinámico de una interfaz.
+```go
+var i interface{} = 10
+switch v := i.(type) {
+case int:
+    fmt.Println("Entero:", v)
+case string:
+    fmt.Println("Texto:", v)
+default:
+    fmt.Println("Otro tipo")
+}
+```
+
+---
+
+### Interfaces Comunes
+
+#### `Stringers` (personalizar impresión)
+La interfaz `fmt.Stringer` define el método `String() string`.
+```go
+type Persona struct{ Nombre string }
+func (p Persona) String() string { return "Persona: " + p.Nombre }
+
+fmt.Println(Persona{"Kevin"}) // Persona: Kevin
+```
+
+#### `Errors` (Interfaz `error` nativa)
+La interfaz `error` define el método `Error() string`.
+```go
+type MiError struct{}
+func (MiError) Error() string { return "Ocurrió un error" }
+
+var err error = MiError{}
+fmt.Println(err.Error())
+```
+
+#### `Readers` (Interfaz `io.Reader` para streams)
+Define el método `Read(p []byte) (n int, err error)`.  
+Ejemplo con `strings.NewReader`:
+```go
+r := strings.NewReader("Hola Go")
+buf := make([]byte, 4)
+n, _ := r.Read(buf)
+fmt.Println(string(buf[:n])) // Hola
+```
+
+#### `Images` (Paquete `image`)
+El paquete `image` define interfaces para manipular imágenes (`image.Image`).
+```go
+import "image"
+
+var img image.Image // puede ser cualquier implementación
+```
+
+
+---
+## 2.5. Genéricos (Go 1.18+)
+
+*Polimorfismo paramétrico.*
+### Funciones genéricas.
+#### Tipos genéricos.
+---
+### Constraints
+#### Restricciones (`comparable`, `any`).
+
+
+
+## 2.6. Concurrencia
+
 `Go` destaca por su **concurrencia con `goroutines` y canales**:
 
 ```go
@@ -303,41 +934,33 @@ go func() { mensajes <- "Hola desde goroutine" }()
 fmt.Println(<-mensajes)
 ```
 
+*El "Killer Feature" de Go.*
+
+* Goroutines
+* Hilos ligeros gestionados por el runtime.
 ---
-
-## Manejo de Errores
-Go usa valores de error explícitos:
-
-```go
-import "errors"
-
-func dividir(a, b int) (int, error) {
-    if b == 0 {
-        return 0, errors.New("división por cero")
-    }
-    return a / b, nil
-}
-
-resultado, err := dividir(10, 0)
-if err != nil {
-    fmt.Println("Error:", err)
-}
-```
-
+* Canales (Channels)
+* Comunicación entre goroutines.
+* Canales con buffer (Buffered Channels).
+* `range` y `close`.
+* Multiplexación de canales (esperar en múltiples canales).
+* `default` en select.
 ---
+* Exclusión Mutua
+* `sync.Mutex` (para cuando no se necesitan canales).
 
-## Manejo de estructura de datos
-Go provee librerías estándar (`container/list`, `container/heap`, etc.):
+# 3. Ejercicios Prácticos (Laboratorio)
 
-```go
-import "container/list"
+*Espacio para la resolución de los ejercicios del Tour.*
 
-l := list.New()
-l.PushBack(1)
-l.PushBack(2)
-for e := l.Front(); e != nil; e = e.Next() {
-    fmt.Println(e.Value)
-}
-```
-
-
+* [[08.01 Ejercicio: Loops and Functions]] (Newton's Method)
+-] (Pic generator)
+* [[08.03 Ejercicio: Maps]] (Word Count)
+* [[08.04 Ejercicio: Fibonacci Closure]]
+-] (IP Addr)
+* [[08.06 Ejercicio: Errors]] (Sqrt Error)
+-] (ASCII Stream)
+-] (Cipher Stream)
+* [[08.09 Ejercicio: Images]] (Generator)
+-] (Concurrency)
+-] (Concurrency + Mutex)
