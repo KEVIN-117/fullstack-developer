@@ -191,9 +191,6 @@ Resumen:
 - `go vet` → análisis estático de errores.  
 - **Go Playground** → laboratorio online para probar y compartir código.
 ---
-Perfecto, Kevin ⚡. Aquí tienes los apuntes completos siguiendo tu estructura, con definiciones cortas y ejemplos prácticos en cada sección:
-
----
 
 # 2. Fundamentos (Basics)
 ---
@@ -559,9 +556,43 @@ func ejemplo() {
 *Gestión de memoria y colecciones de datos.*
 
 ---
+### Punteros
+Permiten referenciar direcciones de memoria.
+```go
+var x int = 10
+var p *int = &x
+fmt.Println(*p) // 10 -> es un apuntador a p que permite acceder a su valor
+```
+
+---
+
+#### Referencias a memoria (`&`, `*`)
+- `&` → obtiene la dirección de memoria.  
+- `*` → desreferencia, accede al valor.
+
+```go
+y := 20
+ptr := &y
+fmt.Println(*ptr) // 20
+```
+
+---
+
+#### `nil`
+Valor especial que indica ausencia de datos en punteros, slices, maps, interfaces, etc.
+```go
+var p *int = nil
+if p == nil {
+    fmt.Println("Puntero vacío")
+}
+```
+
+---
 
 ### Structs
-Definen tipos compuestos que agrupan datos relacionados.
+
+- Definen tipos compuestos que agrupan datos relacionados, también se le define como una colección de campos.
+- Se puede acceder a sus campos usando un punto
 ```go
 type Persona struct {
     Nombre string
@@ -574,56 +605,7 @@ fmt.Println(p.Nombre, p.Edad)
 
 ---
 
-### Interfaces
-Definen comportamientos que los tipos deben implementar.
-```go
-type Animal interface {
-    Hablar() string
-}
-
-type Perro struct{}
-func (Perro) Hablar() string { return "Guau" }
-
-var a Animal = Perro{}
-fmt.Println(a.Hablar())
-```
-
----
-
-### Punteros
-Permiten referenciar direcciones de memoria.
-```go
-var x int = 10
-var p *int = &x
-fmt.Println(*p) // 10
-```
-
----
-
-### Referencias a memoria (`&`, `*`)
-- `&` → obtiene la dirección de memoria.  
-- `*` → desreferencia, accede al valor.
-
-```go
-y := 20
-ptr := &y
-fmt.Println(*ptr) // 20
-```
-
----
-
-### `nil`
-Valor especial que indica ausencia de datos en punteros, slices, maps, interfaces, etc.
-```go
-var p *int = nil
-if p == nil {
-    fmt.Println("Puntero vacío")
-}
-```
-
----
-
-### Definición de campos
+#### Definición de campos
 Los campos de un `struct` pueden ser nombrados o anónimos.
 ```go
 type Punto struct {
@@ -633,15 +615,38 @@ type Punto struct {
 
 ---
 
-### Literales de struct
+#### Literales de struct
 Se pueden inicializar con valores directos.
 ```go
 p := Punto{X: 10, Y: 20}
 ```
 
 ---
+### Arrays
+- Un array se define de la siguiente manera `[n]T` donde este define un array de `n` valores del tipo `T`
+```go
+var a [2]string
+a[0] = "Hello"
+a[1] = "World"
+fmt.Println(a[0], a[1])
+fmt.Println(a)
 
-### Arrays (tamaño fijo) vs Slices (dinámicos)
+primes := [6]int{2, 3, 5, 7, 11, 13}
+fmt.Println(primes)
+```
+
+- Si definimos un array con una tamaño fijo, esto parece ser un gran limitante ya que estas no son Redi mencionables, entonces para ello nacen los `slices`
+#### `Slices`
+- Si decimos que un array es de tamaño fijo, a un `slice` lo conocemos como un  array dinámico sin limite.
+- Su definición es `[]T` esto crea un `slice` de tipo `T` 
+```go
+nums := []int{1,2,4,5,6,7,8,9,10}
+```
+- Ahora podemos acceder a su valores o acceder a una porción de lo valores al puro estilo de `python` con `[low:high]`
+```go
+var part []int = nums[1:4]
+```
+#### Arrays (tamaño fijo) vs Slices (dinámicos)
 - **Array**: tamaño fijo.
 ```go
 var arr [3]int = [3]int{1, 2, 3}
@@ -653,18 +658,21 @@ slice := []int{1, 2, 3, 4}
 
 ---
 
-### Longitud (`len`) y Capacidad (`cap`)
+#### Longitud (`len`) y Capacidad (`cap`)
+- Usamos `len` para ver el numero de elementos que contiene
+- Usamos `cap` para ver cual es su capacidad
 ```go
-s := make([]int, 3, 5)
+s := make([]int, 3, 5) // crea un slice con 3 elementos co sus repectivos valores por defecto y con una capacidad de 5
 fmt.Println(len(s)) // 3
 fmt.Println(cap(s)) // 5
 ```
 
 ---
 
-### Creación con `make`
+#### Creación con `make`
 `make` se usa para crear slices, maps y canales.
 ```go
+// make -> []T, len (int), cap (int)
 s := make([]int, 0, 10)
 m := make(map[string]int)
 c := make(chan int)
@@ -672,7 +680,7 @@ c := make(chan int)
 
 ---
 
-### `append` y `copy`
+#### `append` y `copy`
 - `append` agrega elementos.
 ```go
 s := []int{1, 2}
@@ -687,7 +695,7 @@ copy(b, a)
 
 ---
 
-### Slices de slices (Multidimensionales)
+#### `Slices` de `slices` (Multidimensionales)
 ```go
 matriz := [][]int{
     {1, 2},
@@ -698,7 +706,7 @@ fmt.Println(matriz[1][0]) // 3
 
 ---
 
-### Iteración con `range`
+#### Iteración con `range`
 ```go
 for i, v := range []string{"Go", "Rust", "C++"} {
     fmt.Println(i, v)
@@ -708,10 +716,19 @@ for i, v := range []string{"Go", "Rust", "C++"} {
 ---
 
 ### Maps
-#### Diccionarios clave-valor
+- Conocimos como Diccionarios que su estructura se basa en tipos clave-valor
 ```go
 m := map[string]int{"Ana": 25, "Luis": 30}
+// este solo crea un map
 ```
+- También podemos usar la función `make` para la creación
+```go
+m = make(map[string]Vertex)
+m["Bell Labs"] = Vertex{
+	40.68433, -74.39967,
+}
+```
+
 
 #### Mutación de mapas (insertar, actualizar, borrar)
 ```go
@@ -725,6 +742,12 @@ delete(m, "Luis")  // borrar
 edad, ok := m["Ana"]
 if ok {
     fmt.Println("Edad de Ana:", edad)
+}
+
+// or
+
+if edad, ok := m["Ana"], ok {
+	// your code
 }
 ```
 
@@ -781,7 +804,7 @@ fmt.Println(r.Area()) // 50
 
 ---
 
-### Receptores de valor vs. Receptores de puntero (`(v T)` vs `(v *T)`)
+#### Receptores de valor vs. Receptores de puntero (`(v T)` vs `(v *T)`)
 - **Receptor de valor (`(v T)`)**: recibe una copia del objeto. No modifica el original.
 - **Receptor de puntero (`(v *T)`)**: recibe una referencia. Puede modificar el objeto.
 
@@ -868,9 +891,9 @@ default:
 
 ---
 
-### Interfaces Comunes
+#### Interfaces Comunes
 
-#### `Stringers` (personalizar impresión)
+##### `Stringers` (personalizar impresión)
 La interfaz `fmt.Stringer` define el método `String() string`.
 ```go
 type Persona struct{ Nombre string }
@@ -879,7 +902,7 @@ func (p Persona) String() string { return "Persona: " + p.Nombre }
 fmt.Println(Persona{"Kevin"}) // Persona: Kevin
 ```
 
-#### `Errors` (Interfaz `error` nativa)
+##### `Errors` (Interfaz `error` nativa)
 La interfaz `error` define el método `Error() string`.
 ```go
 type MiError struct{}
@@ -889,7 +912,7 @@ var err error = MiError{}
 fmt.Println(err.Error())
 ```
 
-#### `Readers` (Interfaz `io.Reader` para streams)
+##### `Readers` (Interfaz `io.Reader` para streams)
 Define el método `Read(p []byte) (n int, err error)`.  
 Ejemplo con `strings.NewReader`:
 ```go
@@ -899,7 +922,7 @@ n, _ := r.Read(buf)
 fmt.Println(string(buf[:n])) // Hola
 ```
 
-#### `Images` (Paquete `image`)
+##### `Images` (Paquete `image`)
 El paquete `image` define interfaces para manipular imágenes (`image.Image`).
 ```go
 import "image"
@@ -950,17 +973,3 @@ fmt.Println(<-mensajes)
 * `sync.Mutex` (para cuando no se necesitan canales).
 
 # 3. Ejercicios Prácticos (Laboratorio)
-
-*Espacio para la resolución de los ejercicios del Tour.*
-
-* [[08.01 Ejercicio: Loops and Functions]] (Newton's Method)
--] (Pic generator)
-* [[08.03 Ejercicio: Maps]] (Word Count)
-* [[08.04 Ejercicio: Fibonacci Closure]]
--] (IP Addr)
-* [[08.06 Ejercicio: Errors]] (Sqrt Error)
--] (ASCII Stream)
--] (Cipher Stream)
-* [[08.09 Ejercicio: Images]] (Generator)
--] (Concurrency)
--] (Concurrency + Mutex)
