@@ -33,7 +33,7 @@ Las estructuras condicionales y cíclicas han madurado para prevenir errores com
 Switch Expressions:  
 A diferencia del switch tradicional, las expresiones switch modernas eliminan la necesidad de la sentencia break, previniendo el error de "fall-through" accidental. Además, al ser expresiones, retornan un valor, facilitando la inmutabilidad al permitir la asignación directa a variables final o registros.
 
-```Java
+```java
 
 // Ejemplo de Switch Expression exhaustivo con sintaxis de flecha  
 var tipoDia = switch (dia) {  
@@ -54,7 +54,7 @@ La manipulación de cadenas multilínea (JSON, SQL, HTML) en Java pre-15 era pro
 - **Seguridad:** Facilita la incrustación de JSON o XML para pruebas y payloads de API sin errores de formato.
 - **Incidental Whitespace:** El compilador es inteligente al eliminar la indentación incidental, preservando el formato relativo del texto.1
 
-```Java
+```java
 
 // Ejemplo de Text Block para un JSON de Prompt de IA  
 String promptJson = """  
@@ -128,7 +128,7 @@ La calidad del software moderno depende de pruebas automatizadas. JUnit 5 (Jupit
 - **Act:** Ejecutar el método bajo prueba.
 - **Assert:** Verificar los resultados y efectos colaterales.1
 
-```Java
+```java
 
 @Test  
 void testCalculadoraSuma() {  
@@ -198,7 +198,7 @@ Desde Java 8, el paradigma funcional permite un procesamiento de datos declarati
   - _`Lazy Evaluation`:_ Las operaciones intermedias no se ejecutan hasta que se invoca una operación terminal (ej. `collect`, `forEach`).
   - _Inmutabilidad:_ Los `streams` no modifican la fuente original.1
 
-```Java
+```java
 
 // Ejemplo de Pipeline Funcional  
 List<String> nombresMayusculas = usuarios.stream()  
@@ -230,7 +230,7 @@ Tradicionalmente, Java utilizaba un modelo "uno a uno" entre hilos de Java (java
 
 Actualmente en _preview_, esta API trata múltiples tareas concurrentes relacionadas como una sola unidad de trabajo, mejorando el manejo de errores y la cancelación. Evita los "hilos huérfanos" y simplifica la coordinación.
 
-```Java
+```java
 
 try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {  
  Supplier<String> user = scope.fork(() -> findUser(id));  
@@ -249,7 +249,7 @@ Esto reemplaza la complejidad de CompletableFuture para la coordinación de tare
 
 Los **Records** (Java 14+) son clases inmutables transparentes. Java 21 mejora su uso con **Record Patterns**, permitiendo la desestructuración directa en instanceof y switch.
 
-```Java
+```java
 
 // Pattern Matching con Records  
 if (obj instanceof Point(int x, int y)) {  
@@ -275,7 +275,7 @@ Introducido en Java 11, reemplaza a la antigua HttpURLConnection. Soporta HTTP/1
 
 **Ejemplo de Petición Asíncrona (GET):**
 
-```Java
+```java
 
 HttpClient client = HttpClient.newHttpClient();  
 HttpRequest request = HttpRequest.newBuilder()  
@@ -296,7 +296,7 @@ Este cliente es la base moderna para la comunicación entre microservicios cuand
 
 Java incluye un servidor HTTP ligero ideal para pruebas, prototipos o microservicios mínimos sin dependencias.
 
-```Java
+```java
 
 HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);  
 server.createContext("/api/hello", exchange -> {  
@@ -330,7 +330,7 @@ Spring Boot 3 adopta el estándar **RFC 7807** para respuestas de error. En luga
 
 **Configuración Global con @RestControllerAdvice:**
 
-```Java
+```java
 
 @RestControllerAdvice  
 public class GlobalExceptionHandler {  
@@ -352,7 +352,7 @@ Esto asegura que todos los clientes (Frontend, otros microservicios) reciban una
 
 Los Java Records son ideales para DTOs (Data Transfer Objects) debido a su inmutabilidad y semántica de datos. Se integran perfectamente con **Jakarta Validation** (@Valid).
 
-```Java
+```java
 
 public record UsuarioRegistroDto(  
  @NotBlank(message = "El nombre es obligatorio") String nombre,  
@@ -381,7 +381,7 @@ Spring Boot 3.1 introdujo el soporte nativo para **Docker Compose** en desarroll
 
 Para evitar el problema de "fetching" excesivo (traer columnas innecesarias), Spring Data JPA soporta **Proyecciones** basadas en Interfaces o Records.
 
-```Java
+```java
 
 // Record Proyección: Solo trae lo necesario  
 public record InfoBasicaUsuario(String nombre, String email) {}
@@ -398,7 +398,7 @@ Esto mejora drásticamente el rendimiento en consultas de lectura masiva.27
 
 Para lógica compleja en base de datos, JPA permite mapear procedimientos almacenados directamente a métodos de repositorio, manejando parámetros IN y OUT.
 
-```Java
+```java
 
 @Procedure(procedureName = "calcular_impuestos")  
 BigDecimal calcularImpuestos(Long usuarioId);
@@ -433,7 +433,7 @@ En arquitecturas REST modernas, se prefiere la autenticación sin estado (Statel
 
 **Ejemplo de Configuración (Lambda DSL):**
 
-```Java
+```java
 
 @Bean  
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {  
@@ -467,7 +467,7 @@ Pruebas aisladas de la lógica de negocio. Se usa @ExtendWith(MockitoExtension.c
 
 Para pruebas que requieren infraestructura real (BD, Broker de Mensajes), **Testcontainers** es el estándar. Levanta contenedores Docker efímeros durante la ejecución de los tests.
 
-```Java
+```java
 
 @Testcontainers
 class UsuarioRepoTest {
@@ -547,7 +547,7 @@ Spring AI es la adición más transformadora, proporcionando una abstracción un
 
 ChatClient ofrece una API fluida para interactuar con modelos (OpenAI, Ollama, Azure). Permite parametrizar prompts ("Prompt Templating") para inyectar datos dinámicos de manera segura.
 
-```Java
+```java
 
 String respuesta = chatClient.prompt()  
  .system("Eres un asistente experto en Java.")  
