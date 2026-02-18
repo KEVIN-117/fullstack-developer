@@ -7,31 +7,31 @@ banner: assets/ether-bg.jpeg
 ---
 # **Módulo 0: Introducción a la Programación Moderna y la Evolución de la JVM**
 
-La base de cualquier sistema backend robusto reside en una comprensión profunda de su entorno de ejecución. Java ha evolucionado de ser un lenguaje puramente orientado a objetos a un ecosistema multiparadigma que equilibra la legibilidad, el rendimiento y la seguridad de tipos.
+La base de cualquier sistema `backend` robusto reside en una comprensión profunda de su entorno de ejecución. Java ha evolucionado de ser un lenguaje puramente orientado a objetos a un ecosistema multiparadigma que equilibra la legibilidad, el rendimiento y la seguridad de tipos.
 
 ### **Fundamentos Computacionales y la Máquina Virtual**
 
 Un lenguaje de programación, en su definición formal, actúa como un sistema de notación para escribir algoritmos informáticos. Sin embargo, en el contexto de Java, esta definición se expande mediante la **Java Virtual Machine (JVM)**. La JVM no es simplemente un intérprete; es una máquina de computación abstracta que proporciona aislamiento del hardware y gestión automática de memoria.
 
-La arquitectura moderna de la JVM ha evolucionado significativamente. La gestión de memoria, históricamente un punto de fricción, ha visto mejoras masivas con recolectores de basura generacionales y de baja latencia como ZGC y Shenandoah, disponibles en las distribuciones modernas del JDK.1 La premisa "Write Once, Run Anywhere" se mantiene, pero ahora con un enfoque en la optimización dinámica (JIT Compilation) que permite a las aplicaciones de larga duración superar en rendimiento a binarios compilados estáticamente en ciertos escenarios de carga.
+La arquitectura moderna de la JVM ha evolucionado significativamente. La gestión de memoria, históricamente un punto de fricción, ha visto mejoras masivas con recolectores de basura generacionales y de baja latencia como `ZGC` y `Shenandoah`, disponibles en las distribuciones modernas del JDK.{{1}} La premisa "`Write Once, Run Anywhere`" se mantiene, pero ahora con un enfoque en la optimización dinámica (`JIT Compilation`) que permite a las aplicaciones de larga duración superar en rendimiento a binarios compilados estáticamente en ciertos escenarios de carga.
 
 ### **Sintaxis Moderna: Expresividad y Reducción de Ruido**
 
-La evolución de Java hacia la versión 21 ha estado marcada por la reducción del "boilerplate" (código repetitivo) sin sacrificar la seguridad estática.
+La evolución de Java hacia la versión 21 ha estado marcada por la reducción del "`boilerplate`" (código repetitivo) sin sacrificar la seguridad estática.
 
 #### **Variables e Inferencia de Tipos**
 
-El sistema de tipos de Java ha adoptado la inferencia de tipos local mediante la palabra clave var. Esto no convierte a Java en un lenguaje de tipado dinámico; el tipo se infiere y fija en tiempo de compilación.
+El sistema de tipos de Java ha adoptado la inferencia de tipos local mediante la palabra clave `var`. Esto no convierte a Java en un lenguaje de tipado dinámico; el tipo se infiere y fija en tiempo de compilación.
 
-- **Impacto en la Legibilidad:** Permite que el desarrollador se centre en el _nombre_ de la variable (la intención) más que en el _tipo_ (la implementación mecanística).
-- **Restricciones:** Solo aplicable a variables locales con inicializadores. No se puede usar en campos de clase o parámetros de métodos para mantener contratos de API explícitos.1
+- **Impacto en la Legibilidad:** Permite que el desarrollador se centre en el _nombre_ de la variable (la intención) más que en el _tipo_ (la implementación `mecanística`).
+- **Restricciones:** Solo aplicable a variables locales con inicializadores. No se puede usar en campos de clase o parámetros de métodos para mantener contratos de API explícitos.{{1}}
 
 #### **Estructuras de Control Evolucionadas**
 
 Las estructuras condicionales y cíclicas han madurado para prevenir errores comunes y mejorar la expresividad.
 
-Switch Expressions:  
-A diferencia del switch tradicional, las expresiones switch modernas eliminan la necesidad de la sentencia break, previniendo el error de "fall-through" accidental. Además, al ser expresiones, retornan un valor, facilitando la inmutabilidad al permitir la asignación directa a variables final o registros.
+##### `Switch Expressions`:  
+A diferencia del `switch` tradicional, las expresiones `switch` modernas eliminan la necesidad de la sentencia break, previniendo el error de "`fall-through`" accidental. Además, al ser expresiones, retornan un valor, facilitando la inmutabilidad al permitir la asignación directa a variables final o registros.
 
 ```java
 
@@ -43,16 +43,16 @@ var tipoDia = switch (dia) {
 };
 ```
 
-Esta estructura no solo es más compacta, sino que el compilador verifica la exhaustividad, especialmente útil cuando se trabaja con Enums o Sealed Classes.1
+Esta estructura no solo es más compacta, sino que el compilador verifica la exhaustividad, especialmente útil cuando se trabaja con `Enums` o `Sealed Classes`.{{1}}
 
-#### **Text Blocks**
+##### **Text Blocks**
 
-La manipulación de cadenas multilínea (JSON, SQL, HTML) en Java pre-15 era propensa a errores y difícil de leer debido a la necesidad de caracteres de escape (n, "). Los **Text Blocks** introducen un literal de cadena bidimensional delimitado por triples comillas """.
+La manipulación de cadenas multilínea (JSON, SQL, HTML) en Java pre-15 era propensa a errores y difícil de leer debido a la necesidad de caracteres de escape (n, "). Los **Text Blocks** introducen un literal de cadena bidimensional delimitado por triples comillas `"""`.
 
 **Implicaciones:**
 
-- **Seguridad:** Facilita la incrustación de JSON o XML para pruebas y payloads de API sin errores de formato.
-- **Incidental Whitespace:** El compilador es inteligente al eliminar la indentación incidental, preservando el formato relativo del texto.1
+- **Seguridad:** Facilita la incrustación de `JSON` o `XML` para pruebas y `payloads` de API sin errores de formato.
+- **Incidental `Whitespace`:** El compilador es inteligente al eliminar la indentación incidental, preservando el formato relativo del texto.{{1}}
 
 ```java
 
@@ -77,10 +77,10 @@ Una clase actúa como el plano arquitectónico (blueprint), mientras que los obj
 
 ### **Los Cuatro Pilares: Revisitados**
 
-1. **Encapsulamiento:** Más allá de private y public, el encapsulamiento moderno incluye el concepto de módulos (Java 9 JPMS) y la restricción de herencia mediante sealed classes. El objetivo es minimizar la superficie de API expuesta y proteger las invariantes del estado interno.1
-2. **Herencia:** El mecanismo extends permite la reutilización, pero se prefiere la composición sobre la herencia en diseños modernos para evitar la fragilidad de la clase base.
-3. **Polimorfismo:** La capacidad de intercambiar implementaciones en tiempo de ejecución es la base de la Inyección de Dependencias en Spring.
-4. **Abstracción:** El uso de interfaces y clases abstractas para definir contratos permite desacoplar la definición del servicio de su implementación.1
+1. **`Encapsulamiento`:** Más allá de `private` y `public`, el encapsulamiento moderno incluye el concepto de módulos (Java 9 JPMS) y la restricción de herencia mediante `sealed classes`. El objetivo es minimizar la superficie de API expuesta y proteger las invariantes del estado interno.{{1}}
+2. **`Herencia`:** El mecanismo `extends` permite la reutilización, pero se prefiere la composición sobre la herencia en diseños modernos para evitar la fragilidad de la clase base.
+3. `**Polimorfismo`:** La capacidad de intercambiar implementaciones en tiempo de ejecución es la base de la Inyección de Dependencias en Spring.
+4. **Abstracción:** El uso de interfaces y clases abstractas para definir contratos permite desacoplar la definición del servicio de su implementación.{{1}}
 
 ### **Interfaces vs. Clases Abstractas: Un Análisis Comparativo**
 
@@ -94,18 +94,18 @@ La línea entre interfaces y clases abstractas se ha difuminado desde Java 8, pe
 | **Métodos**       | Abstractos y concretos con cualquier visibilidad.                  | Abstractos, default, static y private (desde Java 9).                      |
 | **Uso Ideal**     | Compartir código y estado entre clases estrechamente relacionadas. | Definir contratos de comportamiento (Capabilities) entre clases disjuntas. |
 
-**Insight:** Los métodos default en interfaces permiten la evolución de APIs sin romper la compatibilidad binaria con implementaciones existentes, un factor crítico en el diseño de librerías.1
+**Insight:** Los métodos default en interfaces permiten la evolución de `APIs` sin romper la compatibilidad binaria con implementaciones existentes, un factor crítico en el diseño de librerías.{{1}}
 
 ### **Asociaciones y Modelado UML en Código**
 
-La traducción precisa de relaciones UML a Java es vital para la integridad referencial y el ciclo de vida de los objetos.1
+La traducción precisa de relaciones UML a Java es vital para la integridad referencial y el ciclo de vida de los objetos.{{1}}
 
-1. **Asociación:** Relación "usa un". El objeto A tiene una referencia al objeto B, pero sus ciclos de vida son independientes.  
-   ```Java  
+1. **`Asociación (↔)`:** Relación "`usa un`". El objeto `A` tiene una referencia al objeto `B`, pero sus ciclos de vida son independientes. 
+   ```java  
    public class Profesor { private Curso curso; } // Referencia débil
    ```
 
-2. **Composición:** Relación "parte de" fuerte. Si el padre muere, el hijo también.  
+2. **`Composición (◆)`:** Relación "parte de" fuerte. Si el padre muere, el hijo también.  
    ```Java  
    public class Casa {  
     private final List<Habitacion> habitaciones = new ArrayList<>();  
@@ -113,7 +113,7 @@ La traducción precisa de relaciones UML a Java es vital para la integridad refe
    }
    ```
 
-3. **Agregación:** Relación "parte de" débil. El hijo puede sobrevivir al padre.  
+3. **Agregación (◇):** Relación "parte de" débil. El hijo puede sobrevivir al padre.  
   ``` Java  
    public class Departamento {  
     private List<Profesor> profesores; // Profesores pueden cambiar de depto  
@@ -122,11 +122,11 @@ La traducción precisa de relaciones UML a Java es vital para la integridad refe
 
 ### **Pruebas Unitarias con JUnit 5: El Patrón AAA**
 
-La calidad del software moderno depende de pruebas automatizadas. JUnit 5 (Jupiter) es el estándar actual. El patrón **AAA (Arrange, Act, Assert)** proporciona una estructura clara:
+La calidad del software moderno depende de pruebas automatizadas. `JUnit 5` (Jupiter) es el estándar actual. El patrón **AAA (`Arrange`, `Act`, `Assert`)** proporciona una estructura clara:
 
-- **Arrange:** Preparar el entorno y los mocks.
-- **Act:** Ejecutar el método bajo prueba.
-- **Assert:** Verificar los resultados y efectos colaterales.1
+- **`Arrange`:** Preparar el entorno y los `mocks`.
+- **`Act`:** Ejecutar el método bajo prueba.
+- **`Assert`:** Verificar los resultados y efectos colaterales.{{1}}
 
 ```java
 
@@ -152,33 +152,39 @@ El desarrollo profesional no ocurre en el vacío; depende de un ecosistema de he
 Maven gestiona la complejidad de las dependencias transitivas y estandariza el ciclo de vida del proyecto.
 
 - **Gestión de Dependencias:** El archivo pom.xml declara dependencias directas. Maven resuelve el grafo de dependencias, descargando artefactos de Maven Central.
-- **Ciclo de Vida:** Comandos como mvn clean, mvn compile, mvn test, mvn package, mvn install ejecutan fases secuenciales predefinidas. mvn dependency:tree es esencial para diagnosticar conflictos de versiones ("Jar Hell").1
+- **Ciclo de Vida:** Comandos como:
+	- `mvn clean`
+	- `mvn compile`
+	- `mvn test`
+	- `mvn package`
+	- `mvn install`
+	ejecutan fases secuenciales predefinidas. `mvn dependency:tree` es esencial para diagnosticar conflictos de versiones ("Jar Hell").1
 
-### **Project Lombok: Reducción de Boilerplate**
+### **Project Lombok: Reducción de `Boilerplate`**
 
-Lombok actúa como un procesador de anotaciones en tiempo de compilación, inyectando código (getters, setters, constructores) en el AST (Abstract Syntax Tree).
+Lombok actúa como un procesador de anotaciones en tiempo de compilación, inyectando código (`getters`, `setters`, constructores) en el `AST` (`Abstract Syntax Tree`).
 
 **Anotaciones Clave:**
 
 - `@Data`: Genera `getters`, `setters`, `toString`, `equals`, `hashCode`. Útil para entidades mutables.
 - `@Builder`: Implementa el patrón `Builder` para la creación fluida de objetos complejos.
-- `@Slf4j`: Inyecta un `logger` estático (`SLF4J`), eliminando la declaración manual del logger.1
+- `@Slf4j`: Inyecta un `logger` estático (`SLF4J`), eliminando la declaración manual del logger.{{1}}
 
-**Contradicción Emergente:** Con la llegada de los **Java `Records`**, el uso de `@Data` para `DTOs` inmutables está siendo reemplazado por la sintaxis nativa de `record`, que ofrece inmutabilidad garantizada por el lenguaje sin dependencias externas.5
+**Contradicción Emergente:** Con la llegada de los **Java `Records`**, el uso de `@Data` para `DTOs` inmutables está siendo reemplazado por la sintaxis nativa de `record`, que ofrece inmutabilidad garantizada por el lenguaje sin dependencias externas.{{5}}
 
 ---
 
 # **Módulo 3: Colecciones, Genéricos y Programación Funcional**
 
-La manipulación eficiente de datos en memoria es crítica para el rendimiento del backend.
+La manipulación eficiente de datos en memoria es crítica para el rendimiento del `backend`.
 
 ### **Colecciones: Estructuras de Datos**
 
 La elección de la implementación correcta de la interfaz `Collection` impacta la complejidad algorítmica (Big O).
 
-- **`List`:** `ArrayList` (acceso O(1), inserción O(n)) vs `LinkedList` (acceso O(n), inserción O(1) en extremos).
-- **`Set`:** `HashSet` (búsqueda O(1)) garantiza unicidad. `TreeSet` mantiene orden natural (O(log n)).
-- **`Map`:** `HashMap` es el estándar para pares clave-valor. Java 9 introdujo factorías inmutables (`List.of`, `Map.of`) que lanzan `UnsupportedOperationException` si se intentan modificar, promoviendo la seguridad.1
+- **`List`:** `ArrayList` (acceso $O(1)$, inserción $O(n)$) vs `LinkedList` (acceso $O(n)$, inserción $O(1)$ en extremos).
+- **`Set`:** `HashSet` (búsqueda $O(1)$) garantiza unicidad. `TreeSet` mantiene orden natural ($O(log n)$).
+- **`Map`:** `HashMap` es el estándar para pares `clave-valor`. Java 9 introdujo factorías inmutables (`List.of`, `Map.of`) que lanzan `UnsupportedOperationException` si se intentan modificar, promoviendo la seguridad.{{1}}
 
 ### **Genéricos: Seguridad de Tipos y PECS**
 
@@ -193,10 +199,14 @@ Los genéricos permiten la abstracción sobre tipos.
 
 Desde Java 8, el paradigma funcional permite un procesamiento de datos declarativo y paralelizable.
 
-- **Interfaces Funcionales:** `Predicate<T>` (booleano), `Function<T,R>` (transformación), `Consumer<T>` (efecto secundario), `Supplier<T>` (generación).
+- **Interfaces Funcionales:** 
+	- `Predicate<T>` (booleano)
+	- `Function<T,R>` (transformación) 
+	- `Consumer<T>` (efecto secundario) 
+	- `Supplier<T>` (generación)
 - **`Streams`:** Pipeline de operaciones (`filter`, `map`, reduce).
   - _`Lazy Evaluation`:_ Las operaciones intermedias no se ejecutan hasta que se invoca una operación terminal (ej. `collect`, `forEach`).
-  - _Inmutabilidad:_ Los `streams` no modifican la fuente original.1
+  - _Inmutabilidad:_ Los `streams` no modifican la fuente original.{{1}}
 
 ```java
 
@@ -243,11 +253,11 @@ try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
 }
 ```
 
-Esto reemplaza la complejidad de CompletableFuture para la coordinación de tareas paralelas.4
+Esto reemplaza la complejidad de CompletableFuture para la coordinación de tareas paralelas.{{4}}
 
 ### **Records y Pattern Matching**
 
-Los **Records** (Java 14+) son clases inmutables transparentes. Java 21 mejora su uso con **Record Patterns**, permitiendo la desestructuración directa en instanceof y switch.
+Los **`Records`** (Java 14+) son clases inmutables transparentes. Java 21 mejora su uso con **`Record Patterns`**, permitiendo la desestructuración directa en `instanceof` y `switch`.
 
 ```java
 
@@ -309,7 +319,7 @@ server.createContext("/api/hello", exchange -> {
 server.start();
 ```
 
-Aunque funcional, carece de características avanzadas como enrutamiento complejo o manejo automático de JSON que proveen frameworks como Spring Boot.15
+Aunque funcional, carece de características avanzadas como enrutamiento complejo o manejo automático de JSON que proveen `frameworks` como Spring Boot.15
 
 ---
 
@@ -590,8 +600,7 @@ Spring Boot 3.4 introduce soporte nativo para **Logging Estructurado** (JSON), c
 La convergencia de **Java 21**, **Spring Boot 3.x** y **Spring AI** define un nuevo estándar para el desarrollo backend. La adopción de **Virtual Threads** resuelve el problema histórico de la escalabilidad I/O sin la complejidad reactiva. Los **Records** y la **Concurrencia Estructurada** modernizan la sintaxis y la gestión de tareas. Finalmente, **Spring AI** democratiza el acceso a la inteligencia artificial generativa, permitiendo a los desarrolladores Java construir sistemas cognitivos complejos (RAG, Agentes) utilizando los patrones de diseño y la seguridad de tipos que han hecho de Java el pilar de la ingeniería de software empresarial. La arquitectura descrita en este informe no es solo una actualización tecnológica, sino una redefinición de las capacidades del backend moderno.
 
 #### **Fuentes citadas**
-
-1. f898cfdc-9874-481a-8114-34cf300468ee_Java_21__Spring_Boot_Backend_Developer.pdf
+1. [[Java 21 + Spring Boot Backend Developer]]
 2. Problem Detail in Spring Boot REST API with Examples | Learn Code With Durgesh, acceso: enero 4, 2026, [https://learncodewithdurgesh.com/tutorials/spring-boot-tutorials/problem-detail-in-spring-boot-rest-api-with-examples](https://learncodewithdurgesh.com/tutorials/spring-boot-tutorials/problem-detail-in-spring-boot-rest-api-with-examples)
 3. Unit Testing Rest Services with Spring Boot and JUnit - in28minutes, acceso: enero 4, 2026, [https://www.springboottutorial.com/unit-testing-for-spring-boot-rest-services](https://www.springboottutorial.com/unit-testing-for-spring-boot-rest-services)
 4. Unit Testing in Spring Boot Project using Mockito and Junit - GeeksforGeeks, acceso: enero 4, 2026, [https://www.geeksforgeeks.org/advance-java/unit-testing-in-spring-boot-project-using-mockito-and-junit/](https://www.geeksforgeeks.org/advance-java/unit-testing-in-spring-boot-project-using-mockito-and-junit/)
