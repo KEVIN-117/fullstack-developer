@@ -1,0 +1,45 @@
+# --- FASE 1: COMPILACIÓN (BUILDER) ---
+# Usamos la imagen oficial de Go con Alpine para compilar
+FROM golang:1.20-alpine AS builder
+
+# Instalar herramientas básicas de compilación (si fueran necesarias)
+RUN apk add --no-cache git gcc musl-dev
+
+# Establecer directorio de trabajo
+WORKDIR /app
+
+# Copiar archivos de dependencias primero para aprovechar la caché de Docker
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copiar el código fuente del proyecto
+COPY . .
+
+# Compilar el binario optimizado para producción.
+# CGO_ENABLED=0 deshabilita la vinculación dinámica a librerías de C para hacer el binario portable.
+# GOOS=linux compila específicamente para sistemas operativos Linux.
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o main .
+
+# --- FASE 2: EJECUCIÓN (RUNTIME) ---
+# Usamos una imagen minimalista de Alpine para ejecutar el binario
+FROM alpine:3.18
+
+# Crear un usuario del sistema sin privilegios root para mayor seguridad
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+WORKDIR /app
+
+# Copiar únicamente el binario compilado desde la fase de construcción (builder)
+COPY --from=builder /app/main .
+
+# Asignar la propiedad del directorio de trabajo al usuario no privilegiado
+RUN chown -R appuser:appgroup /app
+
+# Indicar a Docker que a partir de aquí ejecute todo como 'appuser'
+USER appuser
+
+# Exponer el puerto interno en el que escucha la API
+EXPOSE 3000
+
+# Comando de arranque predeterminado
+CMD ["./main"]

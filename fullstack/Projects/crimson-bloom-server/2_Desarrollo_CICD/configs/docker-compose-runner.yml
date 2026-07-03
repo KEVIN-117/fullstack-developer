@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  github-runner:
+    image: myoung34/github-runner:latest
+    container_name: github-runner
+    environment:
+      # URL de tu repositorio privado o de tu cuenta de organización
+      - REPO_URL=https://github.com/tu-usuario/tu-repo-homelab
+      # Token de registro proveído por GitHub en Settings > Actions > Runners
+      - RUNNER_TOKEN=COPIA_AQUI_EL_TOKEN_DE_GITHUB
+      # Nombre que identificará a este runner en GitHub
+      - RUNNER_NAME=debian-homelab-runner
+      # Etiquetas para asociar este runner en los archivos workflow
+      - RUNNER_LABELS=self-hosted,linux,debian
+      # Ejecutar como usuario root dentro del contenedor para interactuar con docker.sock
+      - RUNNER_AS_ROOT=true
+    volumes:
+      # Montar el socket de Docker para permitir al runner construir imágenes
+      # y levantar otros contenedores en el host Debian físico
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Volumen para guardar el estado y la configuración del runner
+      - ./runner-data:/data
+    restart: always

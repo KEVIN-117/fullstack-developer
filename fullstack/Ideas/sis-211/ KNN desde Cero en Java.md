@@ -1,0 +1,264 @@
+---
+sticker: lucide//brain-circuit
+banner: assets/hero.png
+---
+# 🧪 **Laboratorio en Casa:**
+
+## 🎯 **Objetivo del laboratorio**
+
+Al finalizar este laboratorio, el estudiante será capaz de:
+
+* Comprender el algoritmo **K-Nearest Neighbors (KNN)**
+* Implementarlo desde cero en Java
+* Trabajar con listas (`ArrayList`)
+* Aplicar lógica de distancia y clasificación
+
+---
+
+## 🧠 **¿Qué es KNN? (explicación simple)**
+
+KNN significa:
+
+👉 **K vecinos más cercanos**
+
+La idea es:
+
+1. Tienes datos conocidos (ej: casas)
+2. Llega un dato nuevo
+3. Buscas los **K datos más cercanos**
+4. Tomas una decisión basada en ellos
+
+---
+
+## 📌 **Ejemplo intuitivo**
+
+Si quieres saber si una casa es:
+
+* 🏠 Barata
+* 🏡 Cara
+
+Miras las casas **más parecidas (cercanas)**
+
+👉 Eso es KNN
+
+---
+
+## 📁 **Estructura del proyecto**
+
+```plaintext id="ljfy0t"
+knn-java/
+│
+├── src/
+│   ├── DataPoint.java
+│   ├── KNN.java
+│   └── Main.java
+```
+
+---
+
+# 🪜 **IMPLEMENTACIÓN PASO A PASO**
+
+---
+
+## 🧱 **Paso 1: Clase `DataPoint`**
+
+```java id="ejcflc"
+public class DataPoint {
+
+    double x;       // tamaño
+    String label;   // "Barata" o "Cara"
+
+    public DataPoint(double x, String label) {
+        this.x = x;
+        this.label = label;
+    }
+}
+```
+
+---
+
+## 🧱 **Paso 2: Clase `KNN`**
+
+```java id="80jbqr"
+import java.util.*;
+
+public class KNN {
+
+    int k;
+    List<DataPoint> datos;
+
+    public KNN(int k) {
+        this.k = k;
+        this.datos = new ArrayList<>();
+    }
+
+    public void fit(List<DataPoint> datos) {
+        this.datos = datos;
+    }
+
+    // Calcular distancia (simple: 1D)
+    private double distancia(double x1, double x2) {
+        return Math.abs(x1 - x2);
+    }
+
+    public String predict(double x) {
+
+        // Lista de distancias
+        List<Map.Entry<Double, String>> distancias = new ArrayList<>();
+
+        for (DataPoint d : datos) {
+            double dist = distancia(x, d.x);
+            distancias.add(new AbstractMap.SimpleEntry<>(dist, d.label));
+        }
+
+        // Ordenar por distancia
+        distancias.sort(Comparator.comparingDouble(Map.Entry::getKey));
+
+        // Contar etiquetas
+        Map<String, Integer> conteo = new HashMap<>();
+
+        for (int i = 0; i < k; i++) {
+            String label = distancias.get(i).getValue();
+            conteo.put(label, conteo.getOrDefault(label, 0) + 1);
+        }
+
+        // Encontrar la etiqueta más frecuente
+        String mejorLabel = null;
+        int max = 0;
+
+        for (String label : conteo.keySet()) {
+            if (conteo.get(label) > max) {
+                max = conteo.get(label);
+                mejorLabel = label;
+            }
+        }
+
+        return mejorLabel;
+    }
+}
+```
+
+---
+
+## 🧱 **Paso 3: Clase `Main`**
+
+```java id="d2ik0m"
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        List<DataPoint> datos = new ArrayList<>();
+
+        datos.add(new DataPoint(50, "Barata"));
+        datos.add(new DataPoint(60, "Barata"));
+        datos.add(new DataPoint(80, "Cara"));
+        datos.add(new DataPoint(100, "Cara"));
+        datos.add(new DataPoint(120, "Cara"));
+
+        KNN knn = new KNN(3); // usar 3 vecinos
+        knn.fit(datos);
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Ingrese tamaño de casa: ");
+        double x = scanner.nextDouble();
+
+        String resultado = knn.predict(x);
+
+        System.out.println("Clasificación: " + resultado);
+
+        scanner.close();
+    }
+}
+```
+
+---
+
+## ▶️ **Ejecución esperada**
+
+```plaintext id="p2gl4d"
+Ingrese tamaño de casa:
+70
+
+Clasificación: Barata
+```
+
+---
+
+# 🧠 **¿Qué acaba de hacer el programa?**
+
+👉 Paso a paso:
+
+1. Calcula distancia entre el dato nuevo y todos los datos
+2. Ordena por cercanía
+3. Toma los K más cercanos
+4. Cuenta etiquetas
+5. Devuelve la más frecuente
+
+💥 Eso es KNN real
+
+---
+
+## 📌 **Conceptos de Java que se refuerzan**
+
+* `ArrayList`
+* `HashMap`
+* `Comparator`
+* Clases y objetos
+* Métodos
+
+---
+
+## ⚠️ **Errores comunes**
+
+* No ordenar correctamente
+* Usar `k` mayor que la cantidad de datos
+* No inicializar listas
+
+---
+
+# 🚀 **Desafíos (muy bien diseñados)**
+
+## 🔹 Nivel 1
+
+Permitir ingresar nuevos datos desde teclado
+
+---
+
+## 🔹 Nivel 2
+
+Mostrar los K vecinos más cercanos
+
+---
+
+## 🔹 Nivel 3 (🔥 recomendado)
+
+Cambiar a 2 variables:
+
+```plaintext id="qjv4mn"
+(x = tamaño, y = número de habitaciones)
+```
+
+👉 usar distancia:
+
+```plaintext id="3vjq3y"
+√((x1-x2)^2 + (y1-y2)^2)
+```
+
+---
+
+## 🔹 Nivel 4 (pro)
+
+Evitar empates en votación
+
+---
+
+# 🎯 **Cierre pedagógico**
+
+Este laboratorio es brutal porque:
+
+* Enseña ML real ✔️
+* Refuerza lógica ✔️
+* Usa estructuras clave ✔️
+* Es visualizable ✔️

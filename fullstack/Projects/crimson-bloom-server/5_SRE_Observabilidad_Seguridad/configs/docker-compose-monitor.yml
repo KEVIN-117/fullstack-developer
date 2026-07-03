@@ -1,0 +1,72 @@
+version: '3.8'
+
+networks:
+  monitoring_network:
+    driver: bridge
+
+services:
+  # Servidor de Series Temporales (Prometheus)
+  prometheus:
+    image: prom/prometheus:v2.44.0
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring_network
+    restart: always
+
+  # Visualización de Métricas (Grafana)
+  grafana:
+    image: grafana/grafana:9.5.2
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin-pass # Cambiar en producción
+    networks:
+      - monitoring_network
+    restart: always
+
+  # Recolector de métricas de Hardware del Host Debian
+  node-exporter:
+    image: prom/node-exporter:v1.6.0
+    container_name: node-exporter
+    volumes:
+      # Montar el sistema de archivos raíz en modo lectura para auditar el host Debian
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - monitoring_network
+    restart: always
+
+  # Recolector de métricas de Contenedores Docker (cAdvisor)
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.0
+    container_name: cadvisor
+    volumes:
+      # Montajes de directorios internos del kernel y socket de Docker para auditar recursos
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - monitoring_network
+    restart: always
+
+volumes:
+  prometheus_data:
+  grafana_data:

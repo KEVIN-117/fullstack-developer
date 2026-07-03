@@ -1,0 +1,25 @@
+# Plantilla de Configuración de IP Estática
+# Ruta típica en Debian: /etc/network/interfaces
+#
+# Para aplicar cambios: sudo systemctl restart networking
+# Nota: Asegúrate de reemplazar 'eth0' por el nombre real de tu interfaz (usa 'ip a' para identificarla).
+
+# Interfaz de bucle local (Loopback)
+auto lo
+iface lo inet loopback
+
+# Interfaz física de Ethernet
+auto eth0
+iface eth0 inet static
+    # IP estática asignada al servidor
+    address 192.168.1.100
+
+    # Máscara de subred (estándar para redes hogareñas clase C)
+    netmask 255.255.255.0
+
+    # Puerta de enlace predeterminada (IP de tu Router local)
+    gateway 192.168.1.1
+
+    # Servidores DNS para resolución de nombres de internet
+    # En este ejemplo usamos Cloudflare (1.1.1.1) y Google (8.8.8.8)
+    dns-nameservers 1.1.1.1 8.8.8.8

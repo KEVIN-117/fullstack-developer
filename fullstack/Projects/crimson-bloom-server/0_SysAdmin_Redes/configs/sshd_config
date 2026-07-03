@@ -1,0 +1,63 @@
+# Archivo de Configuración de SSH Asegurado (Hardened sshd_config)
+# Ruta típica en el servidor: /etc/ssh/sshd_config
+#
+# Para aplicar cambios: sudo systemctl restart sshd
+
+# Puerto de Escucha (Por defecto es 22, cámbialo a otro en producción/desafíos)
+Port 22
+
+# Protocolo admitido (solo versión 2)
+Protocol 2
+
+# Direcciones IP por las que el servidor escuchará (0.0.0.0 significa todas)
+ListenAddress 0.0.0.0
+
+# Archivos de Claves del Servidor
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+# --- 🔐 SEGURIDAD Y AUTENTICACIÓN ---
+
+# Deshabilitar el inicio de sesión como root
+PermitRootLogin no
+
+# Verificar permisos del directorio home del usuario antes de loguear
+StrictModes yes
+
+# Intentos máximos de autenticación por conexión antes de colgar
+MaxAuthTries 3
+
+# Deshabilitar por completo autenticación por contraseña
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM yes
+
+# Permitir autenticación con llaves públicas
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+
+# Deshabilitar contraseñas vacías
+PermitEmptyPasswords no
+
+# Deshabilitar autenticación por GSSAPI (suele retrasar conexiones locales)
+GSSAPIAuthentication no
+
+# --- 🛰️ COMPORTAMIENTO Y RED ---
+
+# Deshabilitar reenvío de agentes X11 (seguridad gráfica)
+X11Forwarding no
+
+# Mostrar mensaje de advertencia legal al conectar
+Banner /etc/issue.net
+
+# Mantener la conexión activa (evitar cierres por inactividad del router)
+ClientAliveInterval 300
+ClientAliveCountMax 3
+
+# Deshabilitar túneles TCP innecesarios (puedes activarlo temporalmente si lo necesitas)
+AllowTcpForwarding yes
+
+# Usuarios permitidos explícitamente a loguearse (Lista blanca)
+# Reemplaza 'homelab_admin' por el nombre de tu usuario
+AllowUsers homelab_admin

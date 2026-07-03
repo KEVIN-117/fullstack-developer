@@ -1,3 +1,6 @@
+---
+sticker: lucide//check
+---
 # Class Student:
 
 ```C#

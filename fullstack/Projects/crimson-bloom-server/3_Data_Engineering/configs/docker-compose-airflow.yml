@@ -1,0 +1,84 @@
+version: '3.8'
+
+x-airflow-common: &airflow-common
+  image: apache/airflow:2.6.2-python3.10
+  environment:
+    - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+    - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow_user:airflow_pass@postgres-db:5432/airflow_db
+    - AIRFLOW__CORE__LOAD_EXAMPLES=false
+    - AIRFLOW__CORE__FERNET_KEY=v1g5Yk5KMG9KMXYxZzVZazVLMjlrMXYxZzVZazVLMg== # Llave simétrica cifrada
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+    - ./plugins:/opt/airflow/plugins
+  depends_on:
+    postgres-db:
+      condition: service_healthy
+  networks:
+    - data_network
+
+services:
+  # Base de Datos de Aplicación y Airflow (PostgreSQL)
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: postgres-db
+    environment:
+      - POSTGRES_USER=airflow_user
+      - POSTGRES_PASSWORD=airflow_pass
+      - POSTGRES_DB=airflow_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airflow_user -d airflow_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - data_network
+    restart: always
+
+  # Caché de Ingesta y deduplicación (Redis)
+  redis-cache:
+    image: redis:7-alpine
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - data_network
+    restart: always
+
+  # Servidor Web de Airflow
+  airflow-webserver:
+    <<: *airflow-common
+    container_name: airflow-webserver
+    command: webserver
+    ports:
+      - "8080:8080"
+    restart: always
+
+  # Scheduler de Airflow (ejecutor de tareas)
+  airflow-scheduler:
+    <<: *airflow-common
+    container_name: airflow-scheduler
+    command: scheduler
+    restart: always
+
+  # Inicializador de la base de datos de Airflow
+  airflow-init:
+    <<: *airflow-common
+    container_name: airflow-init
+    command: db init
+    # No es necesario reiniciar este contenedor una vez completada la tarea
+    restart: "no"
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  data_network:
+    driver: bridge

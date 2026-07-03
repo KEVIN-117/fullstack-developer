@@ -1,0 +1,37 @@
+version: '3.8'
+
+# Definición de la red bridge interna para intercomunicación
+networks:
+  homelab_network:
+    driver: bridge
+
+services:
+  # Servicio Proxy Inverso (Nginx)
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    ports:
+      # Exponer únicamente puertos seguros al Host Debian
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Montajes de archivos de configuración y certificados locales
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    networks:
+      - homelab_network
+    restart: always
+
+  # Servicio Web Estático de Prueba
+  web-static:
+    image: nginx:alpine
+    container_name: web-static
+    # NO mapeamos puertos al host. El contenedor solo se comunica por la red bridge.
+    expose:
+      - "80"
+    volumes:
+      # Montar página HTML estática de prueba
+      - ./html:/usr/share/nginx/html:ro
+    networks:
+      - homelab_network
+    restart: always
