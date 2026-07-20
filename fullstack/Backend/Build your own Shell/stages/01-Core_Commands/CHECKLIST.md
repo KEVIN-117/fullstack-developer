@@ -2,18 +2,18 @@
 
 Lista de tareas para completar los fundamentos básicos de tu shell:
 
-- [ ] **1. Inicialización y Prompt**
-  - [ ] Imprimir el prompt `$ ` de forma correcta.
+- [x] **1. Inicialización y Prompt**
+  - [x] Imprimir el prompt `$ ` de forma correcta.
   - [ ] Forzar el vaciado del búfer de salida estándar (`flush`).
-  - [ ] Leer entrada de usuario de forma básica bloqueante por líneas.
+  - [x] Leer entrada de usuario de forma básica bloqueante por líneas.
 
-- [ ] **2. Manejo de Comandos Inválidos y Salida**
-  - [ ] Implementar la salida limpia al escribir `exit 0`.
-  - [ ] Responder con `[comando]: command not found` cuando un comando no es válido.
+- [x] **2. Manejo de Comandos Inválidos y Salida**
+  - [x] Implementar la salida limpia al escribir `exit 0`.
+  - [x] Responder con `[comando]: command not found` cuando un comando no es válido.
 
-- [ ] **3. Comando Integrado `echo`**
-  - [ ] Reconocer y parsear argumentos para `echo`.
-  - [ ] Imprimir la salida seguida de una nueva línea.
+- [x] **3. Comando Integrado `echo`**
+  - [x] Reconocer y parsear argumentos para `echo`.
+  - [x] Imprimir la salida seguida de una nueva línea.
 
 - [ ] **4. Búsqueda en el PATH y Ejecución**
   - [ ] Leer la variable de entorno `$PATH`.

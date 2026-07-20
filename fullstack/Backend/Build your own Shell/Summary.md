@@ -60,12 +60,6 @@ Aunque haremos que sea extremadamente sencillo comenzar, no esperes que esto sea
 *   [Localizar archivos ejecutables](https://app.codecrafters.io/courses/shell/stages/mg5)
 *   [Ejecutar un programa](https://app.codecrafters.io/courses/shell/stages/ip1)
 
-## Navegación
-*   [El comando integrado pwd](https://app.codecrafters.io/courses/shell/stages/ei0)
-*   [El comando integrado cd: Rutas absolutas](https://app.codecrafters.io/courses/shell/stages/ra6)
-*   [El comando integrado cd: Rutas relativas](https://app.codecrafters.io/courses/shell/stages/gq9)
-*   [El comando integrado cd: Directorio personal](https://app.codecrafters.io/courses/shell/stages/gp4)
-
 ## Uso de Comillas (Quoting)
 *   [Comillas simples](https://app.codecrafters.io/courses/shell/stages/ni6)
 *   [Comillas dobles](https://app.codecrafters.io/courses/shell/stages/tg6)
@@ -73,6 +67,12 @@ Aunque haremos que sea extremadamente sencillo comenzar, no esperes que esto sea
 *   [Barra invertida dentro de comillas simples](https://app.codecrafters.io/courses/shell/stages/le5)
 *   [Barra invertida dentro de comillas dobles](https://app.codecrafters.io/courses/shell/stages/gu3)
 *   [Ejecutar un ejecutable entrecomillado](https://app.codecrafters.io/courses/shell/stages/qj0)
+
+## Navegación
+*   [El comando integrado pwd](https://app.codecrafters.io/courses/shell/stages/ei0)
+*   [El comando integrado cd: Rutas absolutas](https://app.codecrafters.io/courses/shell/stages/ra6)
+*   [El comando integrado cd: Rutas relativas](https://app.codecrafters.io/courses/shell/stages/gq9)
+*   [El comando integrado cd: Directorio personal](https://app.codecrafters.io/courses/shell/stages/gp4)
 
 ## Redirección
 *   [Redirigir stdout](https://app.codecrafters.io/courses/shell/stages/jv1)
